@@ -1,0 +1,22 @@
+[Unit]
+Description=Factorio-Server %i (Werk)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=factorio
+Group=factorio
+WorkingDirectory=/var/lib/fpanel/instances/%i
+ExecStart=/var/lib/fpanel/run/%i/launch.sh
+StandardOutput=append:/var/lib/fpanel/logs/%i.log
+StandardError=inherit
+# Factorio speichert beim Beenden per SIGINT
+KillSignal=SIGINT
+TimeoutStopSec=120
+LimitNOFILE=65535
+Nice=-2
+NoNewPrivileges=yes
+# Speicherlimit und Neustartverhalten setzt das Panel pro Instanz als Drop-in
+# (fpanel@<id>.service.d/10-fpanel.conf). Dateisystem-Härtung liegt in
+# fpanel@.service.d/hardening.conf, wenn der Container Mount-Namespaces erlaubt.

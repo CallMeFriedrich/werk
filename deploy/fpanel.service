@@ -1,0 +1,16 @@
+[Unit]
+Description=Werk - Factorio-Panel
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=FPANEL_DATA=/var/lib/fpanel
+Environment=PYTHONUNBUFFERED=1
+WorkingDirectory=/opt/fpanel
+ExecStart=/opt/fpanel/venv/bin/uvicorn fpanel.main:app --host 127.0.0.1 --port 8080 --proxy-headers --forwarded-allow-ips 127.0.0.1 --no-server-header --log-level warning
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
